@@ -15,17 +15,19 @@
 
 <!-- ==================================HEADER====================================== -->
     <header>
-      <h1>DO I OWN IT? / HAVE I PLAYED IT?</h1>
+      <div id="heading-text-container">
+        <h1>DO I OWN IT? / HAVE I PLAYED IT?</h1>
+      </div>
 
       <form action="index.html" method="post">
         <div id="player-id">
           <input type="text" placeholder="Your Steam ID number" id="player-id-box">
           <input type="submit" value="First, Submit Your Player ID Numer" id="submit">
         </div>
-
         <div id="button-div">
 
         </div>
+
 
 
       </form>
@@ -40,7 +42,7 @@
     <main>
 
       <div id=search-box-div>
-      
+        <input type="text" placeholder="Search Games" id="search-box" onkeyup="search()">
       </div>
 
 
