@@ -45,7 +45,7 @@ $("form").on("submit", (event) => {
         console.log(gameObjectArray);
         $("#button-div").empty();
         $("<button>").text("Games by Name").on("click",getGamesByName).appendTo($("#button-div"));
-        $("<button>").text("Games by Time Played").on("click",getUnplayedGames).appendTo($("#button-div"));
+        $("<button>").text("Unplayed Games").on("click",getUnplayedGames).appendTo($("#button-div"));
         $("<button>").text("Random Unplayed Game").on("click",getRandomUnplayed).appendTo($("#button-div"));
       },
 
@@ -103,8 +103,11 @@ Hours Played: ${Math.round(game.playtime_forever / 60)}`,
       })
       .appendTo($("#games-div"))
       .on("click", (event) => {
-        $(event.currentTarget).clone().appendTo("#playlist-container");
-        $("#playlist-div").fadeIn();
+        $(event.currentTarget).clone().removeClass().appendTo("#playlist-container")
+        .on("click", (event) => {
+          $(event.currentTarget).remove();
+        });
+        $("#playlist-div").slideDown();
       });
 
     }
@@ -132,8 +135,11 @@ Hours Played: ${Math.round(randomGame.playtime_forever / 60)}`,
     })
     .appendTo($("#games-div"))
     .on("click", (event) => {
-      $(event.currentTarget).clone().appendTo("#playlist-container");
-      $("#playlist-div").fadeIn();
+      $(event.currentTarget).clone().removeClass().appendTo("#playlist-container")
+      .on("click", (event) => {
+        $(event.currentTarget).remove();
+      });
+      $("#playlist-div").slideDown();
     });
 }
 
