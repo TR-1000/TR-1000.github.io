@@ -1,17 +1,6 @@
 //console.log($);
 
-// $.ajax({
-//     url:"https://cors-anywhere.herokuapp.com/api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=4B605C352384ED1076D931B4A173995D&steamid=76561198056513071&include_appinfo=1&format=json"
-//
-// }).then(
-//     (data)=>{
-//         console.log(data);
-//
-//     },
-//     ()=>{
-//         console.log("bad request");
-//     }
-// );
+
 
 
 /*
@@ -37,47 +26,44 @@ const steamLibrary = {"response":{"game_count":135,"games":[{"appid":220,"name":
 //const input = "Total War: NAPOLEON – Definitive Edition"
 //const libraryArray = steamLibrary.response.games
 
-// let gameName;
-// let playTime;
-let gameObjectArray = steamLibrary.response.games;
-//=======================================Variables==============================
-// $("form").on("submit", (event) => {
-//   const playerIdInput = $("#player-id-box").val();
-//   //const gameTitleInput = $("#game-title-box").val();
-//   console.log(playerIdInput);
-//   //console.log(gameTitleInput);
-//   event.preventDefault();
-//   $.ajax({
-//       url:`https://cors-anywhere.herokuapp.com/api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=4B605C352384ED1076D931B4A173995D&steamid=${playerIdInput}&include_appinfo=1&format=json`
-//
-//   }).then(
-//       (data)=>{
-//         //console.log(data);
-//         gameObjectArray = data.response.games;
-//         console.log(gameObjectArray);
-//         $("#button-div").empty();
-//         $("<button>").text("Your Steam Games").on("click",getGames).appendTo($("#button-div"));
-//         $("<button>").text("Unplayed Games").on("click",getGamesUnplayed).appendTo($("#button-div"));
-//         $("<button>").text("Random Unplayed Game").on("click",getRandomUnplayed).appendTo($("#button-div"));
-//       },
-//
-//       ()=>{
-//           console.log("bad request");
-//       }
-//   );
-// })
+
+let gameObjectArray;
+
+$("form").on("submit", (event) => {
+  const playerIdInput = $("#player-id-box").val();
+  //const gameTitleInput = $("#game-title-box").val();
+  console.log(playerIdInput);
+  //console.log(gameTitleInput);
+  event.preventDefault();
+  $.ajax({
+      url:`https://cors-anywhere.herokuapp.com/api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=4B605C352384ED1076D931B4A173995D&steamid=${playerIdInput}&include_appinfo=1&format=json`
+
+  }).then(
+      (data)=>{
+        //console.log(data);
+        gameObjectArray = data.response.games;
+        console.log(gameObjectArray);
+        $("#button-div").empty();
+        $("<button>").text("Your Steam Games").on("click",getGames).appendTo($("#button-div"));
+        $("<button>").text("Unplayed Games").on("click",getGamesUnplayed).appendTo($("#button-div"));
+        $("<button>").text("Random Unplayed Game").on("click",getRandomUnplayed).appendTo($("#button-div"));
+      },
+
+      ()=>{
+          console.log("bad request");
+      }
+  );
+})
 
 // ====================================FUNCTIONS================================
 
 
+
+// SEARCH FILTER
 const search = () => {
   let filter = $("#search-box").val().toUpperCase();
-
-  //let filter = input.value.toUpperCase();
-  // let a;
   let $gameObjects = $(".game-object")
   for (game of $($gameObjects)) {
-    console.log(game.name);
     if (game.name.toUpperCase().indexOf(filter) > -1) {
       game.style.display = "";
     }
@@ -88,9 +74,12 @@ const search = () => {
 }
 
 
-
+// GET ALL GAMES IN LIBRARY
 const getGames = () => {
   $("#games-div").empty();
+  $("#search-box-div").empty();
+  $("<input>").attr({"type":"text","placeholder":"Game Search","id":"search-box", "onkeyup":"search()"}).appendTo($("#search-box-div"));
+  gameObjectArray.sort(sortByName);
   for (game of gameObjectArray) {
     $("<object>").addClass("game-object")
     .attr({
@@ -99,18 +88,25 @@ const getGames = () => {
 Hours Played: ${Math.round(game.playtime_forever / 60)}`,
       "data":`https://steamcdn-a.akamaihd.net/steam/apps/${game.appid}/header.jpg?`,
       "type":"image/jpg"
-    }).appendTo($("#games-div"))
+    })
+    .appendTo($("#games-div"))
     .on("click", (event) => {
-      $(event.currentTarget).clone().appendTo("#playlist-container");
+      $(event.currentTarget).clone().removeClass().appendTo("#playlist-container")
+      .on("click", (event) => {
+        $(event.currentTarget).remove();
+      });
       $("#playlist-div").slideDown();
     });
 
   }
 }
 
-
+//  GET ALL UNPLAYED GAMES
 const getGamesUnplayed = () => {
   $("#games-div").empty();
+  $("#search-box-div").empty();
+  $("<input>").attr({"type":"text","placeholder":"Game Search","id":"search-box", "onkeyup":"search()"}).appendTo($("#search-box-div"));
+  gameObjectArray.sort(sortByName);
   for (game of gameObjectArray) {
     if ((Math.round(game.playtime_forever / 60)) === 0) {
       $("<object>").attr({
@@ -118,7 +114,8 @@ const getGamesUnplayed = () => {
 Hours Played: ${Math.round(game.playtime_forever / 60)}`,
         "data":`https://steamcdn-a.akamaihd.net/steam/apps/${game.appid}/header.jpg?`,
         "type":"image/jpg"
-      }).appendTo($("#games-div"))
+      })
+      .appendTo($("#games-div"))
       .on("click", (event) => {
         $(event.currentTarget).clone().appendTo("#playlist-container");
         $("#playlist-div").fadeIn();
@@ -129,18 +126,17 @@ Hours Played: ${Math.round(game.playtime_forever / 60)}`,
 }
 
 
+// GET ONE RANDOM UNPLAYED GAME
 const getRandomUnplayed = () => {
   $("#games-div").empty();
+  $("#search-box-div").empty();
   let unplayedGamesArray = []
   for (game of gameObjectArray) {
     if ((Math.round(game.playtime_forever / 60)) === 0) {
       unplayedGamesArray.push(game);
     }
   }
-
-
   let randomGame = unplayedGamesArray[Math.floor(Math.random()*unplayedGamesArray.length)]
-
   $("<object>").addClass("game-object")
     .attr({
       "name": randomGame.name,
@@ -148,7 +144,7 @@ const getRandomUnplayed = () => {
 Hours Played: ${Math.round(randomGame.playtime_forever / 60)}`,
       "data":`https://steamcdn-a.akamaihd.net/steam/apps/${randomGame.appid}/header.jpg?`,
       "type":"image/jpg"
-      })
+    })
     .appendTo($("#games-div"))
     .on("click", (event) => {
       $(event.currentTarget).clone().appendTo("#playlist-container");
@@ -156,4 +152,23 @@ Hours Played: ${Math.round(randomGame.playtime_forever / 60)}`,
     });
 }
 
-getGames();
+// SORT FUNTIONS
+const sortByPlaytime = (a,b) => {
+  if (a.playtime_forever < b.playtime_forever) {
+    return -1;
+  }
+  if (a.playtime_forever > b.playtime_forever) {
+    return 1;
+  }
+  return 0;
+}
+
+const sortByName = (a,b) => {
+  if (a.name.toUpperCase() < b.name.toUpperCase()) {
+    return -1;
+  }
+  if (a.name.toUpperCase() > b.name.toUpperCase()) {
+    return 1;
+  }
+  return 0;
+}
