@@ -45,7 +45,7 @@ $("form").on("submit", (event) => {
         console.log(gameObjectArray);
         $("#button-div").empty();
         $("<button>").text("Games by Name").on("click",getGamesByName).appendTo($("#button-div"));
-        $("<button>").text("Games by Time Played").on("click",getGamesByPlaytime).appendTo($("#button-div"));
+        $("<button>").text("Games by Time Played").on("click",getUnplayedGames).appendTo($("#button-div"));
         $("<button>").text("Random Unplayed Game").on("click",getRandomUnplayed).appendTo($("#button-div"));
       },
 
@@ -59,26 +59,12 @@ $("form").on("submit", (event) => {
 
 
 
-// SEARCH FILTER
-const search = () => {
-  let filter = $("#search-box").val().toUpperCase();
-  let $gameObjects = $(".game-object")
-  for (game of $($gameObjects)) {
-    if (game.name.toUpperCase().indexOf(filter) > -1) {
-      game.style.display = "";
-    }
-    else {
-      game.style.display = "none";
-    }
-  }
-}
+
 
 
 // GET ALL GAMES IN LIBRARY
 const getGamesByName = () => {
   $("#games-div").empty();
-  // $("#search-box-div").empty();
-  // $("<input>").attr({"type":"text","placeholder":"Game Search","id":"search-box", "onkeyup":"search()"}).appendTo($("#search-box-div"));
   gameObjectArray.sort(sortByName);
   for (game of gameObjectArray) {
     $("<object>").addClass("game-object")
@@ -101,12 +87,10 @@ Hours Played: ${Math.round(game.playtime_forever / 60)}`,
   }
 }
 
+
 //  GET ALL UNPLAYED GAMES
-const getGamesByPlaytime = () => {
+const getUnplayedGames = () => {
   $("#games-div").empty();
-  // $("#search-box-div").empty();
-  // $("<input>").attr({"type":"text","placeholder":"Game Search","id":"search-box", "onkeyup":"search()"}).appendTo($("#search-box-div"));
-  gameObjectArray.sort(sortByPlaytime);
   for (game of gameObjectArray) {
     if ((Math.round(game.playtime_forever / 60)) === 0) {
       $("<object>").addClass("game-object")
@@ -131,7 +115,6 @@ Hours Played: ${Math.round(game.playtime_forever / 60)}`,
 // GET ONE RANDOM UNPLAYED GAME
 const getRandomUnplayed = () => {
   $("#games-div").empty();
-  $("#search-box-div").empty();
   let unplayedGamesArray = []
   for (game of gameObjectArray) {
     if ((Math.round(game.playtime_forever / 60)) === 0) {
@@ -152,6 +135,21 @@ Hours Played: ${Math.round(randomGame.playtime_forever / 60)}`,
       $(event.currentTarget).clone().appendTo("#playlist-container");
       $("#playlist-div").fadeIn();
     });
+}
+
+
+// SEARCH FILTER
+const search = () => {
+  let filter = $("#search-box").val().toUpperCase();
+  let $gameObjects = $(".game-object")
+  for (game of $($gameObjects)) {
+    if (game.name.toUpperCase().indexOf(filter) > -1) {
+      game.style.display = "";
+    }
+    else {
+      game.style.display = "none";
+    }
+  }
 }
 
 // SORT FUNTIONS
