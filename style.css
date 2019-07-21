@@ -1,0 +1,119 @@
+body {
+  background-color: black;
+  color: white;
+}
+
+header {
+  background-color: #1B3359;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 40px;
+}
+
+button, input {
+  margin: 5px;
+}
+
+#player-id {
+  display: flex;
+  flex-direction: row;
+  justify-content:flex-start;
+  margin: 0 auto;
+  width: 500px;
+}
+
+
+#button-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin: 0 auto;
+  width: 500px;
+}
+
+#search-box {
+  display: flex;
+  justify-content: flex-start;
+  /* margin: 0 auto; */
+
+}
+
+
+main {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 2000px;
+  margin: 0 auto;
+}
+
+
+
+#games-div {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 600px;
+}
+
+
+
+#playlist-div {
+  display: none;
+  width: 900px;
+  /* justify-content: center
+  align-items: center;
+  flex-direction: column; */
+}
+
+#playlist-div object {
+  height: 100px;
+  margin: 10px;
+}
+
+#playlist {
+  position: sticky;
+  top: 0;
+  width: 540;
+  margin: 40px;
+  padding: 30px;
+  font-size: 50px;
+}
+
+#playlist-container {
+  display: flex;
+  justify-content:center;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+}
+object {
+  margin: 40px;
+}
+
+/* .object-div {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+} */
+
+object .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: blue;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+object .tooltiptext {
+  visibility: visible;
+}

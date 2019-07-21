@@ -11,25 +11,34 @@
       <h1>Do I Own It? / Have I played It?</h1>
 
       <form action="index.html" method="post">
-        <input type="text" placeholder="Your Steam ID number" id="player-id-box">
-        <input type="submit" value="First, Submit Your Player ID Numer" id="submit">
+        <div id="player-id">
+          <input type="text" placeholder="Your Steam ID number" id="player-id-box">
+          <input type="submit" value="First, Submit Your Player ID Numer" id="submit">
+        </div>
+
+        <div id="button-div">
+          <input type="text" placeholder="Search Games" id="search-box" onkeyup="search()">
+        </div>
+
+
       </form>
-
-      <div id="button-div">
-
-      </div>
     </header>
+
+
 
     <main>
 
       <div id="games-div">
       </div>
 
-      <div id="random-game-div">
+      <div id="playlist-div">
+        <ul id="playlist">
+          <h1>Playlist</h1>
+          <div id="playlist-container">
+          </div>
+        </ul>
       </div>
 
-      <div id="playlist-div">
-      </div>
     </main>
 
 
