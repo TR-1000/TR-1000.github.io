@@ -133,9 +133,6 @@ main {
   margin: 20px;
   background-color: #0A1C34;
   box-shadow: 10px 5px 5px #081327;
-  /* justify-content: center
-  align-items: center;
-  flex-direction: column; */
 }
 
 #playlist-div object {
@@ -143,7 +140,6 @@ main {
   margin: 10px;
 
 }
-
 
 #playlist {
   position: sticky;
@@ -162,11 +158,46 @@ main {
   justify-content:center;
   flex-direction: row;
   flex-wrap: wrap;
-
-
 }
+
 object {
   margin: 40px;
   cursor: pointer;
   box-shadow: 10px 5px 5px #081327;
+}
+
+.game-object {
+  position: relative;
+  display: inline-block;
+  /* border-bottom: 1px dotted black; */
+}
+
+.game-object .tooltip-text {
+  position: absolute;
+  background-color: #0b0b0bB3;
+  visibility: hidden;
+  width: 300px;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  margin-left: -50px;
+  z-index: 1;
+  bottom: 1%;
+  left: 32%;
+  opacity: 0;
+}
+
+.tooltip-text {
+  font-size: 30px;
+}
+
+
+.game-object:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1.5;
+}
+
+a {
+  color: #00ff48;
 }
