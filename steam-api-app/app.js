@@ -59,7 +59,10 @@ $("form").on("submit", (event) => {
 // ====================================FUNCTIONS================================
 ////////////////////////////////////////////////////////////////////////////////
 
-// GET ALL GAMES IN LIBRARY
+
+
+
+////////////////////////////////////////////////////// GET ALL GAMES IN LIBRARY
 const getGamesByMostPlayed = () => {
   $("#games-div").empty();
   gameObjectArray.sort(sortByPlaytime);
@@ -79,16 +82,19 @@ const getGamesByMostPlayed = () => {
       });
       $("#playlist-div").slideDown();
     });
-    const $span = $("<span>").addClass("tooltip-text").appendTo($objDiv).text(`Hours Played: ${(game.playtime_forever/60).toFixed(2)}
-    `);
-    $("<a>").attr("href",`https://steamcommunity.com/app/${game.appid}`).text(game.name).appendTo($span);
+    const $span = $("<span>").addClass("tooltip-text").appendTo($objDiv).text(`Hours Played: ${(game.playtime_forever/60).toFixed(2)}`);
+    $("<a>").text(game.name).appendTo($span)
+    .attr({
+      "href":`https://steamcommunity.com/app/${game.appid}`,
+      "target":"_blank"
+    })
   }
 }
 
 
 
 
-//  GET ALL UNPLAYED GAMES
+////////////////////////////////////////////////////// GET ALL UNPLAYED GAMES
 const getUnplayedGames = () => {
   $("#games-div").empty();
   for (game of gameObjectArray) {
@@ -108,9 +114,12 @@ const getUnplayedGames = () => {
         });
         $("#playlist-div").slideDown();
       });
-      const $span = $("<span>").addClass("tooltip-text").appendTo($objDiv).text(`Hours Played: ${game.playtime_forever}
-      `);
-      $("<a>").attr("href",`https://steamcommunity.com/app/${game.appid}`).text(game.name).appendTo($span);
+      const $span = $("<span>").addClass("tooltip-text").appendTo($objDiv).text(`Hours Played: ${game.playtime_forever}`);
+      $("<a>").text(game.name).appendTo($span)
+      .attr({
+        "href":`https://steamcommunity.com/app/${game.appid}`,
+        "target":"_blank"
+      })
 
     }
   }
@@ -118,8 +127,7 @@ const getUnplayedGames = () => {
 
 
 
-
-// GET ONE RANDOM UNPLAYED GAME
+//////////////////////////////////////////// GET ONE RANDOM UNPLAYED GAME
 const getRandomUnplayed = () => {
   $("#games-div").empty();
   let unplayedGamesArray = []
@@ -133,7 +141,7 @@ const getRandomUnplayed = () => {
   const $objDiv = $("<div>").addClass("game-object-div").appendTo("#games-div");
   $("<object>").addClass("game-object")
   .attr({
-    "name": game.name,
+    "name": randomGame.name,
     "data":`https://steamcdn-a.akamaihd.net/steam/apps/${randomGame.appid}/header.jpg?`,
     "type":"image/jpg"
   })
@@ -145,27 +153,18 @@ const getRandomUnplayed = () => {
     });
     $("#playlist-div").slideDown();
   });
-  const $span = $("<span>").addClass("tooltip-text").appendTo($objDiv).text(
-`Hours Played: ${game.playtime_forever}`);
-$("<a>").attr("href",`https://steamcommunity.com/app/${randomGame.appid}`).text(randomGame.name).appendTo($span);
-  // $("<object>").addClass("game-object")
-  //   .attr({
-  //     "data":`https://steamcdn-a.akamaihd.net/steam/apps/${randomGame.appid}/header.jpg?`,
-  //     "type":"image/jpg"
-  //   })
-  //   .appendTo($("#games-div"))
-  //   .on("click", (event) => {
-  //     $(event.currentTarget).clone().removeClass().appendTo("#playlist-container")
-  //     .on("click", (event) => {
-  //       $(event.currentTarget).remove();
-  //     });
-  //     $("#playlist-div").slideDown();
-  //   });
+  const $span = $("<span>").addClass("tooltip-text").appendTo($objDiv).text(`Hours Played: ${randomGame.playtime_forever}`);
+  $("<a>").text(randomGame.name).appendTo($span)
+  .attr({
+    "href":`https://steamcommunity.com/app/${randomGame.appid}`,
+    "target":"_blank"
+  })
+
 }
 
 
 
-// SEARCH FILTER
+////////////////////////////////////////////////////////////// SEARCH FILTER
 const search = () => {
   let filter = $("#search-box").val().toUpperCase();
   let $gameObjects = $(".game-object")
@@ -179,7 +178,7 @@ const search = () => {
   }
 }
 
-// SORT FUNTIONS
+///////////////////////////////////////////////////////////////// SORT FUNTIONS
 const sortByPlaytime = (a,b) => {
   if (a.playtime_forever > b.playtime_forever) {
     return -1;
@@ -204,7 +203,7 @@ const sortByName = (a,b) => {
 
 
 
-//Playlist h1 hide event listener
+////////////////////////////////////////////////Playlist h1 hide event listener
 $("#playlist-h1").on("click", (event) => {
   $("#playlist-div").slideUp()
 })
