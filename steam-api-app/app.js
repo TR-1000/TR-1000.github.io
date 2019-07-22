@@ -25,11 +25,11 @@ gameArray[index].appid
 
 
 let gameObjectArray;
+//$("#button-div").empty();
 
-
-
+////////////////////////////////////////////////////////////////////////////////
 // ===============================API CALL=====================================
-
+////////////////////////////////////////////////////////////////////////////////
 $("form").on("submit", (event) => {
   const playerIdInput = $("#player-id-box").val();
   console.log(playerIdInput);
@@ -43,9 +43,11 @@ $("form").on("submit", (event) => {
         gameObjectArray = data.response.games;
         console.log(gameObjectArray);
         $("#button-div").empty();
-        $("<button>").text("Your Steam Games").on("click",getGamesByName).appendTo($("#button-div"));
+        $("#search-box-div").slideDown();
+        $("<button>").text("Your Steam Games").on("click",getGamesByMostPlayed).appendTo($("#button-div"));
         $("<button>").text("Unplayed Games").on("click",getUnplayedGames).appendTo($("#button-div"));
         $("<button>").text("Random Unplayed Game").on("click",getRandomUnplayed).appendTo($("#button-div"));
+
       },
 
       ()=>{
@@ -53,17 +55,19 @@ $("form").on("submit", (event) => {
       }
   );
 })
-
+////////////////////////////////////////////////////////////////////////////////
 // ====================================FUNCTIONS================================
+////////////////////////////////////////////////////////////////////////////////
 
 // GET ALL GAMES IN LIBRARY
-const getGamesByName = () => {
+const getGamesByMostPlayed = () => {
   $("#games-div").empty();
   gameObjectArray.sort(sortByPlaytime);
   for (game of gameObjectArray) {
-    const $objDiv = $("<div>").addClass("game-object").appendTo("#games-div");
-    $("<object>")
+    const $objDiv = $("<div>").addClass("game-object-div").appendTo("#games-div");
+    $("<object>").addClass("game-object")
     .attr({
+      "name": game.name,
       "data":`https://steamcdn-a.akamaihd.net/steam/apps/${game.appid}/header.jpg?`,
       "type":"image/jpg"
     })
@@ -82,14 +86,17 @@ const getGamesByName = () => {
 }
 
 
+
+
 //  GET ALL UNPLAYED GAMES
 const getUnplayedGames = () => {
   $("#games-div").empty();
   for (game of gameObjectArray) {
     if (game.playtime_forever  === 0) {
-      const $objDiv = $("<div>").addClass("game-object").appendTo("#games-div");
-      $("<object>")
+      const $objDiv = $("<div>").addClass("game-object-div").appendTo("#games-div");
+      $("<object>").addClass("game-object")
       .attr({
+        "name": game.name,
         "data":`https://steamcdn-a.akamaihd.net/steam/apps/${game.appid}/header.jpg?`,
         "type":"image/jpg"
       })
@@ -101,13 +108,15 @@ const getUnplayedGames = () => {
         });
         $("#playlist-div").slideDown();
       });
-      const $span = $("<span>").addClass("tooltip-text").appendTo($objDiv).text(`Hours Played: ${(game.playtime_forever/60).toFixed(2)}
+      const $span = $("<span>").addClass("tooltip-text").appendTo($objDiv).text(`Hours Played: ${game.playtime_forever}
       `);
       $("<a>").attr("href",`https://steamcommunity.com/app/${game.appid}`).text(game.name).appendTo($span);
 
     }
   }
 }
+
+
 
 
 // GET ONE RANDOM UNPLAYED GAME
@@ -121,9 +130,10 @@ const getRandomUnplayed = () => {
   }
   let randomGame = unplayedGamesArray[Math.floor(Math.random()*unplayedGamesArray.length)]
   console.log(randomGame);
-  const $objDiv = $("<div>").addClass("game-object").appendTo("#games-div");
-  $("<object>")
+  const $objDiv = $("<div>").addClass("game-object-div").appendTo("#games-div");
+  $("<object>").addClass("game-object")
   .attr({
+    "name": game.name,
     "data":`https://steamcdn-a.akamaihd.net/steam/apps/${randomGame.appid}/header.jpg?`,
     "type":"image/jpg"
   })
@@ -153,9 +163,6 @@ $("<a>").attr("href",`https://steamcommunity.com/app/${randomGame.appid}`).text(
   //   });
 }
 
-$("#playlist-h1").on("click", (event) => {
-  $("#playlist-div").slideUp()
-})
 
 
 // SEARCH FILTER
@@ -184,6 +191,7 @@ const sortByPlaytime = (a,b) => {
 }
 
 
+
 const sortByName = (a,b) => {
   if (a.name.toUpperCase() < b.name.toUpperCase()) {
     return -1;
@@ -193,3 +201,10 @@ const sortByName = (a,b) => {
   }
   return 0;
 }
+
+
+
+//Playlist h1 hide event listener
+$("#playlist-h1").on("click", (event) => {
+  $("#playlist-div").slideUp()
+})

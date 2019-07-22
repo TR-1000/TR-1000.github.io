@@ -26,7 +26,6 @@ header {
 
 header h1 {
   margin-bottom: 5px;
-
 }
 
 form {
@@ -95,6 +94,7 @@ input[type=text] {
 }
 
 #search-box-div {
+  display: none;
   height: 70px;
   width: 100%;
   margin: 0 auto;
@@ -160,19 +160,23 @@ main {
   flex-wrap: wrap;
 }
 
+#playlist-h1 {
+  cursor: pointer;
+}
+
 object {
   margin: 40px;
   cursor: pointer;
   box-shadow: 10px 5px 5px #081327;
 }
 
-.game-object {
+.game-object-div {
   position: relative;
   display: inline-block;
   /* border-bottom: 1px dotted black; */
 }
 
-.game-object .tooltip-text {
+.game-object-div .tooltip-text {
   position: absolute;
   background-color: #0b0b0bB3;
   visibility: hidden;
@@ -189,15 +193,21 @@ object {
 }
 
 .tooltip-text {
-  font-size: 30px;
+  font-size: 20px;
 }
 
 
-.game-object:hover .tooltip-text {
+.game-object-div:hover .tooltip-text {
   visibility: visible;
   opacity: 1.5;
 }
 
 a {
   color: #00ff48;
+}
+
+span {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
