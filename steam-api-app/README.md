@@ -1,4 +1,4 @@
-# Did I buy that?
+# Did I Buy That?
 An app for quickly searching through your Steam library so you don't buy the same game twice.
 
 ![](https://github.com/TR-1000/TR-1000.github.io/blob/master/steam-api-app/did_i_buy_that.jpg)
@@ -11,8 +11,6 @@ Enter your Steam player ID number then use the buttons that appear to:
 * Randomly display one unplayed game.
 
 Clicking on the game image will add it to a playlist that doesn't appear until something is added.
-
-
 
 # Why, you ask?
 I Have a lot of unplayed games in my Steam Library and on more that one occasion I've bought a Steam game twice.
