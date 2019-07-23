@@ -41,12 +41,13 @@ $("form").on("submit", (event) => {
 
     }).then(
         (data)=>{
+          gameObjectArray = data.response.games;
           console.log("call api for data");
           console.log(gameObjectArray);
           console.log(`data${playerId}`);
           //localStorage.clear();
           localStorage.setItem(`data${playerId}`,JSON.stringify(data));
-          gameObjectArray = data.response.games;
+
           generateMainButtons();
 
         },
