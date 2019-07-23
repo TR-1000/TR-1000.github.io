@@ -24,42 +24,83 @@ gameArray[index].appid
 //const libraryArray = steamLibrary.response.games
 
 
-let gameObjectArray;
-//$("#button-div").empty();
 
-////////////////////////////////////////////////////////////////////////////////
+
+
+// //////////////////////////////////////////////////////////////////////////////
 // ===============================API CALL=====================================
-////////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////////
 $("form").on("submit", (event) => {
-  const playerIdInput = $("#player-id-box").val();
-  console.log(playerIdInput);
+  const playerId = $("#player-id-box").val();
+  console.log(playerId);
   event.preventDefault();
-  $.ajax({
-      url:`https://cors-anywhere.herokuapp.com/api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=4B605C352384ED1076D931B4A173995D&steamid=${playerIdInput}&include_appinfo=1&format=json`
+  if (localStorage.getItem(`data${playerId}`) === null) {
+    $.ajax({
+        url:`https://cors-anywhere.herokuapp.com/api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=4B605C352384ED1076D931B4A173995D&steamid=${playerId}&include_appinfo=1&format=json`
 
-  }).then(
-      (data)=>{
-        //console.log(data);
-        gameObjectArray = data.response.games;
-        console.log(gameObjectArray);
-        $("#button-div").empty();
-        $("#search-box-div").slideDown();
-        $("<button>").text("Your Steam Games").on("click",getGamesByMostPlayed).appendTo($("#button-div"));
-        $("<button>").text("Unplayed Games").on("click",getUnplayedGames).appendTo($("#button-div"));
-        $("<button>").text("Random Unplayed Game").on("click",getRandomUnplayed).appendTo($("#button-div"));
+    }).then(
+        (data)=>{
+          console.log("retrieved api call data");
+          localStorage.clear();
+          localStorage.setItem(`data${playerId}`,JSON.stringify(data));
+          console.log(`data${playerId}`);
+          gameObjectArray = data.response.games;
+          console.log(gameObjectArray);
+          generateMainButtons();
 
-      },
+        },
 
-      ()=>{
-          console.log("bad request");
-      }
-  );
+        ()=>{
+            console.log("bad request");
+        }
+    );
+  }
+  else {
+    console.log("retrieved local data");
+    gameObjectArray = JSON.parse(localStorage.getItem(`data${playerId}`)).response.games;
+    generateMainButtons();
+  }
+
 })
-////////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////////
 // ====================================FUNCTIONS================================
-////////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////////
 
+const makeGameOjectElement = () => {
+  //tooltip div creation
+  const $objDiv = $("<div>")
+  .addClass("game-object-div")
+  .appendTo("#games-div");
+  //object to hold game data
+  $("<object>")
+  .addClass("game-object")
+  .attr({
+    "name": game.name,
+    "data":`https://steamcdn-a.akamaihd.net/steam/apps/${game.appid}/header.jpg?`,
+    "type":"image/jpg"
+  })
+  .appendTo($objDiv)
 
+  //Event listeners/handlers
+  .on("click", (event) => {
+    $(event.currentTarget).clone().removeClass().appendTo("#playlist-container")
+    .on("click", (event) => {
+      $(event.currentTarget).remove();
+    });
+    $("#playlist-div").slideDown();
+  });
+  //span for tooltip text
+  const $span = $("<span>")
+  .addClass("tooltip-text")
+  .appendTo($objDiv)
+  .text(`Hours Played: ${(game.playtime_forever/60).toFixed(2)}`);
+  //anchor tag for link inside tooltip
+  $("<a>").text(game.name).appendTo($span)
+  .attr({
+    "href":`https://steamcommunity.com/app/${game.appid}`,
+    "target":"_blank"
+  })
+}
 
 
 ////////////////////////////////////////////////////// GET ALL GAMES IN LIBRARY
@@ -67,30 +108,9 @@ const getGamesByMostPlayed = () => {
   $("#games-div").empty();
   gameObjectArray.sort(sortByPlaytime);
   for (game of gameObjectArray) {
-    const $objDiv = $("<div>").addClass("game-object-div").appendTo("#games-div");
-    $("<object>").addClass("game-object")
-    .attr({
-      "name": game.name,
-      "data":`https://steamcdn-a.akamaihd.net/steam/apps/${game.appid}/header.jpg?`,
-      "type":"image/jpg"
-    })
-    .appendTo($objDiv)
-    .on("click", (event) => {
-      $(event.currentTarget).clone().removeClass().appendTo("#playlist-container")
-      .on("click", (event) => {
-        $(event.currentTarget).remove();
-      });
-      $("#playlist-div").slideDown();
-    });
-    const $span = $("<span>").addClass("tooltip-text").appendTo($objDiv).text(`Hours Played: ${(game.playtime_forever/60).toFixed(2)}`);
-    $("<a>").text(game.name).appendTo($span)
-    .attr({
-      "href":`https://steamcommunity.com/app/${game.appid}`,
-      "target":"_blank"
-    })
+    makeGameOjectElement();
   }
 }
-
 
 
 
@@ -99,66 +119,36 @@ const getUnplayedGames = () => {
   $("#games-div").empty();
   for (game of gameObjectArray) {
     if (game.playtime_forever  === 0) {
-      const $objDiv = $("<div>").addClass("game-object-div").appendTo("#games-div");
-      $("<object>").addClass("game-object")
-      .attr({
-        "name": game.name,
-        "data":`https://steamcdn-a.akamaihd.net/steam/apps/${game.appid}/header.jpg?`,
-        "type":"image/jpg"
-      })
-      .appendTo($objDiv)
-      .on("click", (event) => {
-        $(event.currentTarget).clone().removeClass().appendTo("#playlist-container")
-        .on("click", (event) => {
-          $(event.currentTarget).remove();
-        });
-        $("#playlist-div").slideDown();
-      });
-      const $span = $("<span>").addClass("tooltip-text").appendTo($objDiv).text(`Hours Played: ${game.playtime_forever}`);
-      $("<a>").text(game.name).appendTo($span)
-      .attr({
-        "href":`https://steamcommunity.com/app/${game.appid}`,
-        "target":"_blank"
-      })
-
+      makeGameOjectElement();
     }
   }
 }
 
 
 
-//////////////////////////////////////////// GET ONE RANDOM UNPLAYED GAME
+/////////////////////////////////////////////// GET ONE RANDOM UNPLAYED GAME
 const getRandomUnplayed = () => {
   $("#games-div").empty();
-  let unplayedGamesArray = []
-  for (game of gameObjectArray) {
-    if (game.playtime_forever === 0) {
-      unplayedGamesArray.push(game);
-    }
+
+  //new array of unplayed games
+  let unplayedGames = [];
+  for (object of gameObjectArray) {
+     if (object.playtime_forever === 0) {
+      unplayedGames.push(object);
+     }
   }
-  let randomGame = unplayedGamesArray[Math.floor(Math.random()*unplayedGamesArray.length)]
-  console.log(randomGame);
-  const $objDiv = $("<div>").addClass("game-object-div").appendTo("#games-div");
-  $("<object>").addClass("game-object")
-  .attr({
-    "name": randomGame.name,
-    "data":`https://steamcdn-a.akamaihd.net/steam/apps/${randomGame.appid}/header.jpg?`,
-    "type":"image/jpg"
-  })
-  .appendTo($objDiv)
-  .on("click", (event) => {
-    $(event.currentTarget).clone().removeClass().appendTo("#playlist-container")
-    .on("click", (event) => {
-      $(event.currentTarget).remove();
-    });
-    $("#playlist-div").slideDown();
-  });
-  const $span = $("<span>").addClass("tooltip-text").appendTo($objDiv).text(`Hours Played: ${randomGame.playtime_forever}`);
-  $("<a>").text(randomGame.name).appendTo($span)
-  .attr({
-    "href":`https://steamcommunity.com/app/${randomGame.appid}`,
-    "target":"_blank"
-  })
+
+  //creating a random index number
+  index = Math.floor(Math.random()*unplayedGames.length);
+
+  //if a game index matches the random number it goes to the DOM
+  for (game of unplayedGames) {
+    if (unplayedGames.indexOf(game) === index) {
+      console.log(game);
+      makeGameOjectElement();
+    }
+
+  }
 
 }
 
@@ -178,7 +168,7 @@ const search = () => {
   }
 }
 
-///////////////////////////////////////////////////////////////// SORT FUNTIONS
+/////////////////////////////////////////////////////////////// SORT FUNTIONS
 const sortByPlaytime = (a,b) => {
   if (a.playtime_forever > b.playtime_forever) {
     return -1;
@@ -188,7 +178,6 @@ const sortByPlaytime = (a,b) => {
   }
   return 0;
 }
-
 
 
 const sortByName = (a,b) => {
@@ -201,9 +190,16 @@ const sortByName = (a,b) => {
   return 0;
 }
 
+//////////////////////////////////////////////////////////////////// BUTTONS
+const generateMainButtons = () => {
+  $("#button-div").empty();
+  $("#search-box-div").slideDown();
+  $("<button>").text("Your Steam Games").on("click",getGamesByMostPlayed).appendTo($("#button-div"));
+  $("<button>").text("Unplayed Games").on("click",getUnplayedGames).appendTo($("#button-div"));
+  $("<button>").text("Random Unplayed Game").on("click",getRandomUnplayed).appendTo($("#button-div"));
+}
 
-
-////////////////////////////////////////////////Playlist h1 hide event listener
+///////////////////////////////////////////////  Playlist h1 hide event listener
 $("#playlist-h1").on("click", (event) => {
   $("#playlist-div").slideUp()
 })
