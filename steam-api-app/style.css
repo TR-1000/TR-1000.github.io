@@ -1,13 +1,16 @@
 body {
   background-color: #08182F;
   color: #BCBAB8;
-  font-family: 'Questrial', sans-serif;
-  text-shadow: 10px 5px 5px #000000;
+  font-family: "Questrial", sans-serif;
 }
+
 
 #heading-text-container {
   width: 1250px;
+  text-align: center;
+  text-shadow: 2px 3px 3px #000000;
 }
+
 
 header {
   background-color: #081327;
@@ -15,23 +18,26 @@ header {
   background-repeat: no-repeat;
   background-size: contain;
   height: 250px;
-  /* width: 100%; */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   padding: 40px;
-  font-size: 40px;
+  font-size: 35px;
 }
+
 
 header h1 {
   margin-bottom: 5px;
+  margin: 0 auto;
 }
+
 
 form {
   width: 700px;
   height: 120px;
 }
+
 
 button, input {
   margin: 5px;
@@ -41,29 +47,37 @@ button, input {
   display: inline-block;
 }
 
-input:hover {
-  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
-}
-
-button:hover {
-  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
-}
-
-
 button {
 text-align: center;
+width: 170px;
+border: 1px solid #CCC;
+border-radius: 2px;
+}
+
+
+button:hover {
+  box-shadow: 0 12px 16px 0 #FFFFFF40;
+}
+
+input {
+ width: 240px;
+}
+
+
+input:hover {
+  box-shadow: 0 12px 16px 0 #FFFFFF40;
 }
 
 
 input[type=text] {
   background-color: #C6FCFC;
-  border: 1px solid #ccc;
+  border: 1px solid #CCC;
   border-radius: 2px;
 }
 
-::placeholder {
-  color: #bfbfbf;
 
+::placeholder {
+  color: #BFBFBF;
 }
 
 
@@ -100,27 +114,26 @@ input[type=text] {
   margin: 0 auto;
 }
 
+
 main {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  /* width: 2000px; */
   margin: 0 auto;
 }
+
 
 #main-container {
   display: flex;
   justify-content: space-around;
-  /* width: 2000px; */
-  /* margin: 0 auto */
 }
+
 
 #games-div {
   display: flex;
   align-items: center;
   flex-direction: column;
   width: 900px;
-  /* margin: 0 auto; */
   margin: 20px;
   background-color: #0A1C34;
   box-shadow: 10px 5px 5px #081327;
@@ -141,6 +154,7 @@ main {
 
 }
 
+
 #playlist {
   position: sticky;
   top: 0;
@@ -160,9 +174,11 @@ main {
   flex-wrap: wrap;
 }
 
+
 #playlist-h1 {
   cursor: pointer;
 }
+
 
 object {
   margin: 40px;
@@ -170,18 +186,19 @@ object {
   box-shadow: 10px 5px 5px #081327;
 }
 
+
 .game-object-div {
   position: relative;
   display: inline-block;
-  /* border-bottom: 1px dotted black; */
 }
+
 
 .game-object-div .tooltip-text {
   position: absolute;
-  background-color: #0b0b0bB3;
   visibility: hidden;
   width: 300px;
-  color: #fff;
+  background-color: #0B0B0BB3;
+  color: #FFF;
   text-align: center;
   border-radius: 6px;
   padding: 5px 0;
@@ -191,6 +208,7 @@ object {
   left: 32%;
   opacity: 0;
 }
+
 
 .tooltip-text {
   font-size: 20px;
@@ -202,9 +220,11 @@ object {
   opacity: 1.5;
 }
 
+
 a {
-  color: #00ff48;
+  color: #00FF48;
 }
+
 
 span {
   display: flex;

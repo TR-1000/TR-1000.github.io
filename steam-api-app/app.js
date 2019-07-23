@@ -30,6 +30,7 @@ gameArray[index].appid
 // //////////////////////////////////////////////////////////////////////////////
 // ===============================API CALL=====================================
 // //////////////////////////////////////////////////////////////////////////////
+
 $("form").on("submit", (event) => {
   const playerId = $("#player-id-box").val();
   console.log(playerId);
@@ -40,12 +41,12 @@ $("form").on("submit", (event) => {
 
     }).then(
         (data)=>{
-          console.log("retrieved api call data");
-          localStorage.clear();
-          localStorage.setItem(`data${playerId}`,JSON.stringify(data));
-          console.log(`data${playerId}`);
-          gameObjectArray = data.response.games;
+          console.log("call api for data");
           console.log(gameObjectArray);
+          console.log(`data${playerId}`);
+          //localStorage.clear();
+          localStorage.setItem(`data${playerId}`,JSON.stringify(data));
+          gameObjectArray = data.response.games;
           generateMainButtons();
 
         },
@@ -56,12 +57,14 @@ $("form").on("submit", (event) => {
     );
   }
   else {
-    console.log("retrieved local data");
+    console.log("collecting local data");
     gameObjectArray = JSON.parse(localStorage.getItem(`data${playerId}`)).response.games;
     generateMainButtons();
   }
 
 })
+
+
 // //////////////////////////////////////////////////////////////////////////////
 // ====================================FUNCTIONS================================
 // //////////////////////////////////////////////////////////////////////////////
@@ -199,7 +202,12 @@ const generateMainButtons = () => {
   $("<button>").text("Random Unplayed Game").on("click",getRandomUnplayed).appendTo($("#button-div"));
 }
 
-///////////////////////////////////////////////  Playlist h1 hide event listener
+///////////////////////////////////////////// Event listeners
 $("#playlist-h1").on("click", (event) => {
   $("#playlist-div").slideUp()
+})
+
+$("#submit").on("click", () => {
+  $("#games-div").empty();
+  $("#playlist-container").empty();
 })

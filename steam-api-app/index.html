@@ -4,7 +4,7 @@
     <link href="https://fonts.googleapis.com/css?family=Questrial&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <meta charset="utf-8">
-    <title>Do I Own it?</title>
+    <title>DID I BUY THAT?</title>
   </head>
   <body>
 
@@ -13,14 +13,15 @@
     <header>
 
       <div id="heading-text-container">
-        <h1>DO I OWN IT? / HAVE I PLAYED IT?</h1>
+        <h1>DID I BUY THAT? / HAVE I PLAYED IT?</h1>
       </div>
 
       <form action="index.html" method="post">
         <div id="player-id">
-          <input type="text" placeholder="Your Steam ID number" id="player-id-box">
-          <input type="submit" value="First, Submit Your Player ID Numer" id="submit">
+          <input id="player-id-box" type="text" title="Enter your SteamID number" placeholder="Steam ID number" >
+          <input id="submit" type="submit" value="Enter Your Player ID Number" >
         </div>
+
         <div id="button-div">
           <!-- <button>Your Steam Games</button>
           <button>Unplayed Games</button>
@@ -30,12 +31,12 @@
 
     </header>
 
-    <a href="#"></a>
+
 <!-- ==================================MAIN========================================= -->
     <main>
 
       <div id=search-box-div>
-        <input type="text" placeholder="Search Games" id="search-box" onkeyup="search()">
+        <input type="text" title="Type game title" placeholder="Search Games" id="search-box" onkeyup="search()">
       </div>
 
 
@@ -43,7 +44,7 @@
         <div id="games-div"></div>
         <div id="playlist-div">
           <ul id="playlist">
-            <h1 id="playlist-h1">PLAYLIST</h1>
+            <h1 id="playlist-h1" title="Click to hide playlist">PLAYLIST</h1>
             <div id="playlist-container">
             </div>
           </ul>
