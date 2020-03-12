@@ -38,8 +38,7 @@ you have to enter your ID number again.
 
 
 # Roadmap
-* Storing image files in a local cache.
-* Compare local storage data against API to check for updates.
+* https://developers.google.com/web/fundamentals/instant-and-offline/web-storage/cache-api
 * Adding the option for the user to enter their own API key.
 * Add a button to clear the page before entering a new player ID number.
 * Make the returned list of games sortable by name or playtime in ascending and descending order.
