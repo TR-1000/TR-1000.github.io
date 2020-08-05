@@ -1,4 +1,4 @@
-# Did I Buy That?
+# [Did I Buy That?](https://tr-1000.github.io/steam-api-app/)
 An app for quickly searching through your Steam library so you don't buy the same game twice.
 
 ![](https://github.com/TR-1000/TR-1000.github.io/blob/master/steam-api-app/did_i_buy_that.jpg)
